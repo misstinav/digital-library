@@ -1,14 +1,15 @@
 const { default: mongoose } = require("mongoose");
+const Book = require('././bookModel');
 
 const searchSchema = new mongoose.Schema({
     start: Number,
     numberFound: Number,
-    documents: [{
-        //TODO: finish building the book object
-        //TODO: build a bookModel that can replace this section of code
-        title: String,
-        author: String
-    }]
+    documents: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: Book
+        }
+    ]
 });
 
 const SearchResults = mongoose.model('SearchResults', searchSchema);
