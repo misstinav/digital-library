@@ -1,13 +1,21 @@
 const dotenv = require('dotenv');
-dotenv.config({path: './config.env'});
+dotenv.config();
 
-//TODO: do I want to separate the query type? It's not necessary for the search
-//but it could add a bit of organization..
-exports.searchFeature = async (queryType, query) => {
+//TODO: later - add in queryType to expand search
+exports.searchFeature = async (query) => {
     try {
-        //TODO: build url and add param to it
+        const url = `${process.env.SEARCH_API}?q=${query}`;
+        const response = await fetch(url);
+        
+        if (response.ok) {
+            return response.data;
+        }
+        else {
+            throw new Error('Failed to return search results');
+        }
     } 
     catch (error) {
-        console.error("Error fetching third-party book objects");
+        console.error("Error fetching third-party book objects: ", error);
+        throw error;
     }
 };
