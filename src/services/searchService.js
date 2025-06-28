@@ -5,10 +5,17 @@ dotenv.config();
 exports.searchFeature = async (query) => {
     try {
         const url = `${process.env.SEARCH_API}?q=${query}`;
-        const response = await fetch(url);
-        
-        if (response.ok) {
-            return response.data;
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'User-Agent': process.env.USER_AGENT,
+                'Accept': 'application/json'
+            }
+        });
+        const searchObj = await response.json();
+
+        if (searchObj) {
+            return searchObj;
         }
         else {
             throw new Error('Failed to return search results');
